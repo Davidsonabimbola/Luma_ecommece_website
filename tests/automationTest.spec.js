@@ -1,40 +1,45 @@
 const { test, expect } = require('@playwright/test');
 const PlaceOrder = require('../pages/Select_singleOrder')
+const sign_up = require('../pages/SignUp')
 
 test('TC_001 successful registration', async ({ page }) => {
-  await page.goto('https://magento.softwaretestingboard.com/');
-  await expect(await page.locator('[class="page-wrapper"]')).toBeTruthy()
-  await page.getByRole('link',{name: 'Create an Account'}).click()
-  await expect(page.locator('[id="maincontent"]')).toBeVisible()
+  const sign_Up = sign_up(page)
+  var newUser_First_Name = 'Roy'
+  var newUser_Last_Name = 'Steadman'
+  var newUser_Email = 'royreads_23@yahoo.com'
+  var newUser_Password = '2024.Practice'
+  var newUser_confirmPassword = '2024.Practice'
+  await sign_Up.goTo_homepage()
+  await sign_Up.goTo_createAccount()
+  await sign_Up.fillForm(newUser_First_Name,
+    newUser_Last_Name,
+    newUser_Email,
+    newUser_Password,
+    newUser_confirmPassword)
+  await sign_Up.clickCreateAccount()
 
-  // sign up 
-  await page.locator('[id="firstname"]').fill('Dariva')
-  await page.locator('[id="lastname"]').fill('Gronsory')
-  await page.locator('[id="email_address"]').fill('dariva_grongy2098@yahoo.com')
-  await page.locator('[id="password"]').fill('Vanmuster.007')
- await expect(await page.locator('[id="password-strength-meter"]')).toBeTruthy()
-  await page.locator('[id="password-confirmation"]').fill('Vanmuster.007')
-
-  await page.getByRole('button',{name: 'Create an Account'}).click()
 
 });
 
 
 test('TC_002 unsuccessful registration due to missing password and confirm password', async ({ page }) => {
-    await page.goto('https://magento.softwaretestingboard.com/');
-    await expect(await page.locator('[class="page-wrapper"]')).toBeTruthy()
-    await page.getByRole('link',{name: 'Create an Account'}).click()
-    await expect(page.locator('[id="maincontent"]')).toBeVisible()
-  
-    // sign up 
-    await page.locator('[id="firstname"]').fill('Bernard')
-    await page.locator('[id="lastname"]').fill('Mount')
-    await page.locator('[id="email_address"]').fill('benmeet_grongy2098@yahoo.com')
-     await page.getByRole('button',{name: 'Create an Account'}).click()
-     await expect(page.locator('[id="password-error"]')).toBeVisible()
-     await expect(page.locator('[id="password-error"]')).toContainText('This is a required field.')
-     await expect(page.locator('[id="password-confirmation-error"]')).toBeVisible()
-     await expect(page.locator('[id="password-confirmation-error"]')).toContainText('This is a required field.')
+  const sign_Up = sign_up(page)
+  var newUser_First_Name = 'Bernard'
+  var newUser_Last_Name = 'Mount'
+  var newUser_Email = 'benmeet_grongy2098@yahoo.com'
+   var newUser_Password = ''
+   var newUser_confirmPassword = ''
+  await sign_Up.goTo_homepage()
+  await sign_Up.goTo_createAccount()
+  await sign_Up.fillForm(newUser_First_Name,
+    newUser_Last_Name,
+    newUser_Email,
+    newUser_Password,
+    newUser_confirmPassword)
+  await sign_Up.clickCreateAccount()
+  await sign_Up.passwordField_errorMessage()
+  await sign_Up.confirmPasswordField_errorMessage()
+
 
   });
 
